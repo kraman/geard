@@ -22,5 +22,12 @@ echo "cd $GEARD_PATH" >> ~vagrant/.bashrc
 echo "bind '\"\e[A\":history-search-backward'" >> ~vagrant/.bashrc
 echo "bind '\"\e[B\":history-search-forward'" >> ~vagrant/.bashrc
 
+grep "gear-auth-keys-command" /etc/ssh/sshd_config
+if [ $? -ne 0 ]; then
+echo "AuthorizedKeysCommand /var/lib/containers/bin/gear-auth-keys-command" >> /etc/ssh/sshd_config
+echo "AuthorizedKeysCommandUser nobody" >> /etc/ssh/sshd_config
+service sshd restart
+fi
+
 echo "Docker access will be enabled when you 'vagrant ssh' in."
 echo "Run 'contrib/build' to build your source."
